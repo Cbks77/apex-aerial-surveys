@@ -188,7 +188,11 @@ nav.scrolled {
   transition: opacity 0.2s, transform 0.2s !important;
 }
 .nav-cta:hover { opacity: 0.9; transform: translateY(-1px) !important; }
-.nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; color: var(--white); }
+.nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; color: var(--white); padding: 8px; z-index: 110; }
+.nav-mobile-btn.open svg rect:nth-child(1) { transform: rotate(45deg) translate(5px, -3px); transition: transform 0.3s var(--ease); }
+.nav-mobile-btn.open svg rect:nth-child(2) { opacity: 0; transition: opacity 0.2s; }
+.nav-mobile-btn.open svg rect:nth-child(3) { transform: rotate(-45deg) translate(5px, 3px); transition: transform 0.3s var(--ease); }
+.nav-mobile-btn svg rect { transition: transform 0.3s var(--ease), opacity 0.2s; }
 
 /* ─── HERO ─── */
 #hero {
@@ -792,7 +796,36 @@ footer {
 }
 @media (max-width: 768px) {
   nav { padding: 0 20px; }
-  .nav-links { display: none; }
+  .nav-links {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0;
+    background: rgba(8,14,26,0.97);
+    backdrop-filter: blur(24px);
+    z-index: 105;
+    padding: 80px 20px 40px;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { width: 100%; text-align: center; }
+  .nav-links a {
+    display: block;
+    font-size: 18px !important;
+    padding: 18px 0;
+    color: var(--white) !important;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 1px;
+  }
+  .nav-links li:last-child a { border-bottom: none; }
+  .nav-links .nav-cta {
+    margin-top: 20px;
+    padding: 16px 32px !important;
+    border-radius: 8px;
+    font-size: 16px !important;
+    display: inline-block;
+    width: auto;
+  }
   .nav-mobile-btn { display: block; }
   section { padding: 70px 20px; }
   .hero-stats { flex-direction: column; gap: 0; }
@@ -842,7 +875,7 @@ footer {
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
   </ul>
-  <button class="nav-mobile-btn" onclick="document.querySelector('.nav-links').style.display = document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex'">
+  <button class="nav-mobile-btn" id="mobileMenuBtn" aria-label="Toggle menu">
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect y="3" width="22" height="2" rx="1" fill="currentColor"/><rect y="10" width="22" height="2" rx="1" fill="currentColor"/><rect y="17" width="22" height="2" rx="1" fill="currentColor"/></svg>
   </button>
 </nav>
@@ -1441,6 +1474,39 @@ for (let i = 0; i < 25; i++) {
   `;
   container.appendChild(p);
 }
+
+// HTTPS redirect (fallback until GitHub Pages enforces)
+if (location.protocol === 'http:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+  location.replace('https://' + location.host + location.pathname + location.search + location.hash);
+}
+
+// Mobile menu toggle
+const mobileBtn = document.getElementById('mobileMenuBtn');
+const navLinks = document.querySelector('.nav-links');
+
+mobileBtn.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  mobileBtn.classList.toggle('open', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
+
+// Close menu when a nav link is clicked
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    mobileBtn.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+// Close menu on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+    navLinks.classList.remove('open');
+    mobileBtn.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
 </script>
 
 <script>
