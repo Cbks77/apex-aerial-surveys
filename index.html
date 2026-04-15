@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Aerial Surveys | Professional UAV Inspection & Survey Services UK</title>
+<meta name="description" content="CAA-licensed drone inspection and survey specialists across the UK. Serving construction, scaffolding, property and infrastructure sectors with fast, precise aerial surveys.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & VARS ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #080E1A;
+  --slate: #1C2A3A;
+  --blue: #00CFFF;
+  --orange: #FF6B35;
+  --white: #F0F4FF;
+  --grey: #8A9BB0;
+  --border: rgba(255,255,255,0.07);
+  --glow: rgba(0,207,255,0.15);
+  --ease: cubic-bezier(0.22,1,0.36,1);
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px;
+  transition: background 0.4s var(--ease), backdrop-filter 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(8,14,26,0.85);
+  backdrop-filter: blur(20px);
+  border-color: var(--border);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 12px;
+}
+.nav-logo-icon { width: 36px; height: 36px; flex-shrink: 0; }
+.nav-logo-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 14px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+}
+.nav-logo-text span { color: var(--blue); }
+.nav-links {
+  display: flex; align-items: center; gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px; font-weight: 500;
+  color: var(--grey); letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--blue);
+  color: var(--bg) !important;
+  font-weight: 600 !important;
+  padding: 10px 22px;
+  border-radius: 6px;
+  transition: opacity 0.2s, transform 0.2s !important;
+}
+.nav-cta:hover { opacity: 0.9; transform: translateY(-1px) !important; }
+.nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; color: var(--white); }
+
+/* ─── HERO ─── */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 100px 5% 80px;
+  overflow: hidden;
+}
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,207,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,207,255,0.035) 1px, transparent 1px);
+  background-size: 70px 70px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%);
+}
+.hero-orb {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  filter: blur(80px);
+}
+.hero-orb-1 { width: 600px; height: 600px; background: rgba(0,207,255,0.07); top: -100px; left: 50%; transform: translateX(-50%); }
+.hero-orb-2 { width: 300px; height: 300px; background: rgba(255,107,53,0.06); bottom: 10%; right: 10%; }
+.hero-orb-3 { width: 250px; height: 250px; background: rgba(0,207,255,0.05); bottom: 20%; left: 5%; }
+
+/* Floating particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; width: 2px; height: 2px;
+  background: var(--blue); border-radius: 50%;
+  animation: float-up linear infinite;
+  opacity: 0;
+}
+@keyframes float-up {
+  0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100px) translateX(var(--drift)); opacity: 0; }
+}
+
+/* Drone animation */
+.hero-drone-wrap {
+  position: relative; z-index: 1;
+  margin-bottom: 48px;
+  animation: drone-hover 4s ease-in-out infinite;
+}
+@keyframes drone-hover {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-12px) rotate(1deg); }
+  75% { transform: translateY(-6px) rotate(-1deg); }
+}
+.hero-drone-wrap svg { width: 120px; height: 120px; }
+.rotor-spin { animation: spin 0.4s linear infinite; transform-origin: center; }
+
+/* Scan line */
+.scan-ring {
+  position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+  width: 160px; height: 20px;
+  background: radial-gradient(ellipse, rgba(0,207,255,0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: scan-pulse 4s ease-in-out infinite;
+}
+@keyframes scan-pulse {
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) scaleX(1); }
+  50% { opacity: 0.8; transform: translateX(-50%) scaleX(1.2); }
+}
+
+.hero-eyebrow {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,207,255,0.08);
+  border: 1px solid rgba(0,207,255,0.25);
+  border-radius: 100px;
+  padding: 6px 18px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 24px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+}
+.hero-title {
+  position: relative; z-index: 1;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: clamp(44px, 7vw, 88px);
+  line-height: 1.0; letter-spacing: -2px;
+  color: var(--white); margin-bottom: 24px;
+}
+.hero-title .accent { color: var(--blue); }
+.hero-title .line2 { display: block; }
+
+.hero-sub {
+  position: relative; z-index: 1;
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--grey); max-width: 580px;
+  margin: 0 auto 48px; line-height: 1.7;
+}
+.hero-sub strong { color: var(--white); }
+
+.hero-ctas {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap; justify-content: center;
+  margin-bottom: 80px;
+}
+.btn-primary {
+  background: var(--blue); color: var(--bg);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 14px; letter-spacing: 0.5px;
+  padding: 16px 36px; border-radius: 8px;
+  border: none; cursor: pointer;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s;
+  box-shadow: 0 0 30px rgba(0,207,255,0.3);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(0,207,255,0.45); }
+
+.btn-secondary {
+  background: transparent; color: var(--white);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600; font-size: 14px;
+  padding: 15px 32px; border-radius: 8px;
+  border: 1px solid var(--border); cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+
+/* Hero stats bar */
+.hero-stats {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 0;
+  background: rgba(28,42,58,0.6);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+}
+.hero-stat {
+  padding: 20px 40px;
+  text-align: center;
+  flex: 1;
+}
+.hero-stat + .hero-stat { border-left: 1px solid var(--border); }
+.hero-stat-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 26px; color: var(--white);
+  line-height: 1;
+}
+.hero-stat-num span { color: var(--blue); }
+.hero-stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--grey);
+  margin-top: 6px;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--grey);
+  animation: fade-up-in 1s ease 1s both;
+}
+.scroll-dot {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--blue), transparent);
+  animation: scroll-line 2s ease-in-out infinite;
+}
+@keyframes scroll-line {
+  0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+  50% { opacity: 1; transform: scaleY(1); }
+  100% { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+}
+@keyframes fade-up-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ─── SECTION BASE ─── */
+section { padding: 100px 5%; }
+.section-label {
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.15; margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 17px; color: var(--grey);
+  max-width: 560px; line-height: 1.7;
+}
+.section-header { margin-bottom: 60px; }
+.section-header.center { text-align: center; }
+.section-header.center .section-sub { margin: 0 auto; }
+
+/* ─── SERVICES ─── */
+#services { background: var(--bg); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.service-card {
+  background: var(--slate);
+  border: 1px solid var(--border);
+  border-radius: 16px; padding: 36px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s var(--ease);
+  cursor: default;
+}
+.service-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.service-card:hover { border-color: rgba(0,207,255,0.3); transform: translateY(-4px); }
+.service-card:hover::before { opacity: 1; }
+.service-card.featured {
+  border-color: rgba(0,207,255,0.25);
+  background: linear-gradient(135deg, #1C2A3A 0%, #0f1e30 100%);
+}
+.service-card.featured::before { opacity: 1; }
+
+.service-icon {
+  width: 52px; height: 52px; border-radius: 12px;
+  background: rgba(0,207,255,0.1);
+  border: 1px solid rgba(0,207,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px; font-size: 22px;
+}
+.service-card.featured .service-icon { background: rgba(0,207,255,0.15); }
+.service-tag {
+  display: inline-block;
+  background: rgba(0,207,255,0.1); color: var(--blue);
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 100px;
+  margin-bottom: 16px; border: 1px solid rgba(0,207,255,0.2);
+}
+.service-card h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 19px; margin-bottom: 10px;
+  color: var(--white);
+}
+.service-card p { font-size: 14px; color: var(--grey); line-height: 1.7; margin-bottom: 20px; }
+.service-price {
+  font-family: 'Space Mono', monospace; font-size: 13px;
+  color: var(--blue); margin-top: auto;
+}
+.service-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--blue);
+  margin-top: 16px; transition: gap 0.2s;
+}
+.service-card:hover .service-link { gap: 10px; }
+
+/* ─── HOW IT WORKS ─── */
+#process {
+  background: linear-gradient(180deg, var(--bg) 0%, #0a1422 100%);
+  position: relative; overflow: hidden;
+}
+#process::before {
+  content: ''; position: absolute;
+  width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,207,255,0.04) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+.process-steps {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; position: relative;
+}
+.process-steps::before {
+  content: ''; position: absolute;
+  top: 36px; left: calc(16.67% + 36px); right: calc(16.67% + 36px);
+  height: 1px; background: linear-gradient(90deg, var(--blue), rgba(0,207,255,0.2), var(--blue));
+  z-index: 0;
+}
+.process-step {
+  text-align: center; padding: 0 40px;
+  position: relative; z-index: 1;
+}
+.step-num {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--slate); border: 1px solid rgba(0,207,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; font-size: 20px;
+  font-weight: 700; color: var(--blue);
+  margin: 0 auto 28px;
+  box-shadow: 0 0 30px rgba(0,207,255,0.1);
+}
+.process-step h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 18px;
+  margin-bottom: 12px;
+}
+.process-step p { font-size: 14px; color: var(--grey); line-height: 1.7; }
+
+/* ─── WHY APEX ─── */
+#why {
+  background: var(--bg);
+}
+.why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.why-features { display: flex; flex-direction: column; gap: 20px; }
+.why-feature {
+  display: flex; gap: 20px;
+  background: var(--slate); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+  transition: border-color 0.3s, transform 0.3s var(--ease);
+}
+.why-feature:hover { border-color: rgba(0,207,255,0.25); transform: translateX(6px); }
+.why-feature-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: rgba(0,207,255,0.1); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.why-feature h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600; font-size: 15px; margin-bottom: 6px;
+}
+.why-feature p { font-size: 13px; color: var(--grey); line-height: 1.6; }
+
+.why-visual {
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.why-card-main {
+  background: var(--slate); border: 1px solid rgba(0,207,255,0.2);
+  border-radius: 20px; padding: 40px; width: 100%; max-width: 360px;
+  position: relative; overflow: hidden;
+}
+.why-card-main::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--orange));
+}
+.why-card-drone {
+  text-align: center; margin-bottom: 28px;
+  animation: drone-hover 4s ease-in-out infinite;
+}
+.why-card-stat {
+  background: rgba(0,207,255,0.06); border: 1px solid rgba(0,207,255,0.15);
+  border-radius: 10px; padding: 16px; margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.why-card-stat-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--grey); text-transform: uppercase; }
+.why-card-stat-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: var(--blue); }
+.why-badge {
+  position: absolute; top: -12px; right: -12px;
+  background: var(--orange); border-radius: 10px;
+  padding: 10px 16px; text-align: center;
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px;
+  color: white; box-shadow: 0 8px 24px rgba(255,107,53,0.4);
+}
+
+/* ─── STATS ─── */
+#stats {
+  background: linear-gradient(135deg, #0a1422 0%, var(--bg) 100%);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 80px 5%;
+}
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.stat-item {
+  background: var(--bg); padding: 48px 32px; text-align: center;
+}
+.stat-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 52px; line-height: 1;
+  color: var(--white); margin-bottom: 8px;
+}
+.stat-num .unit { color: var(--blue); }
+.stat-desc { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); }
+
+/* ─── PRICING ─── */
+#pricing { background: var(--bg); }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  max-width: 1000px; margin: 0 auto;
+}
+.pricing-card {
+  background: var(--slate); border: 1px solid var(--border);
+  border-radius: 20px; padding: 40px; position: relative;
+  transition: transform 0.3s var(--ease), border-color 0.3s;
+}
+.pricing-card:hover { transform: translateY(-6px); border-color: rgba(0,207,255,0.2); }
+.pricing-card.popular {
+  border-color: rgba(0,207,255,0.4);
+  background: linear-gradient(160deg, #1C2A3A 0%, #0f2035 100%);
+  transform: scale(1.03);
+}
+.pricing-card.popular:hover { transform: scale(1.03) translateY(-6px); }
+.popular-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--blue); color: var(--bg);
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 5px 16px; border-radius: 100px;
+  white-space: nowrap;
+}
+.pricing-card h3 {
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+  font-size: 18px; margin-bottom: 8px;
+}
+.pricing-card .pricing-type { font-size: 12px; color: var(--grey); margin-bottom: 28px; }
+.price-amount {
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+  font-size: 44px; line-height: 1; color: var(--white); margin-bottom: 4px;
+}
+.price-amount .from { font-size: 16px; color: var(--grey); font-weight: 400; vertical-align: top; margin-top: 8px; display: inline-block; }
+.price-amount .currency { font-size: 24px; color: var(--blue); }
+.price-note { font-size: 12px; color: var(--grey); margin-bottom: 32px; }
+.pricing-divider { height: 1px; background: var(--border); margin-bottom: 28px; }
+.pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+.pricing-features li {
+  font-size: 14px; color: var(--grey);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.pricing-features li::before {
+  content: '✓'; color: var(--blue); font-weight: 700;
+  flex-shrink: 0; margin-top: 1px;
+}
+.btn-outline {
+  width: 100%; padding: 14px;
+  background: transparent; border: 1px solid var(--border);
+  border-radius: 8px; color: var(--white);
+  font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+  font-size: 14px; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-outline:hover { border-color: var(--blue); background: rgba(0,207,255,0.06); }
+.btn-blue {
+  width: 100%; padding: 14px;
+  background: var(--blue); border: none;
+  border-radius: 8px; color: var(--bg);
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+  font-size: 14px; cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 0 24px rgba(0,207,255,0.3);
+}
+.btn-blue:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ─── TESTIMONIALS ─── */
+#testimonials { background: linear-gradient(180deg, var(--bg) 0%, #0a1422 100%); }
+.testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.testimonial-card {
+  background: var(--slate); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px;
+  position: relative;
+}
+.testimonial-card::before {
+  content: '"'; position: absolute; top: 16px; right: 24px;
+  font-size: 80px; color: rgba(0,207,255,0.08);
+  font-family: Georgia, serif; line-height: 1;
+}
+.testimonial-stars { color: var(--orange); font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
+.testimonial-card p { font-size: 14px; color: var(--grey); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.author-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--orange));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+  font-size: 14px; color: var(--bg);
+}
+.author-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; }
+.author-company { font-size: 12px; color: var(--grey); }
+
+/* ─── CONTACT ─── */
+#contact {
+  background: var(--bg);
+  position: relative; overflow: hidden;
+}
+#contact::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,207,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,207,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; position: relative; }
+.contact-info { display: flex; flex-direction: column; gap: 28px; }
+.contact-item { display: flex; align-items: flex-start; gap: 16px; }
+.contact-item-icon {
+  width: 46px; height: 46px; border-radius: 12px;
+  background: rgba(0,207,255,0.1); border: 1px solid rgba(0,207,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.contact-item h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.contact-item p { font-size: 14px; color: var(--grey); }
+.contact-item a { color: var(--blue); }
+.contact-accreditations {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;
+}
+.accred-badge {
+  background: var(--slate); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 16px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 1.5px; color: var(--grey); text-transform: uppercase;
+}
+.accred-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+
+.contact-form {
+  background: var(--slate); border: 1px solid var(--border);
+  border-radius: 20px; padding: 40px;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.form-group label {
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--grey);
+}
+.form-group input, .form-group select, .form-group textarea {
+  background: rgba(8,14,26,0.8);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 13px 16px; color: var(--white);
+  font-family: 'Inter', sans-serif; font-size: 14px;
+  outline: none; transition: border-color 0.2s;
+  width: 100%;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color: rgba(0,207,255,0.5);
+}
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-group select option { background: #1C2A3A; }
+.form-submit {
+  width: 100%; padding: 16px;
+  background: var(--blue); border: none; border-radius: 8px;
+  color: var(--bg); font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 15px; letter-spacing: 0.5px;
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 24px rgba(0,207,255,0.25);
+}
+.form-submit:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(0,207,255,0.4); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: #040810;
+  border-top: 1px solid var(--border);
+  padding: 60px 5% 32px;
+}
+.footer-top {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px; margin-bottom: 60px;
+}
+.footer-brand p { font-size: 14px; color: var(--grey); max-width: 280px; line-height: 1.7; margin-top: 16px; }
+.footer-col h5 {
+  font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--blue);
+  margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-col ul li a { font-size: 14px; color: var(--grey); transition: color 0.2s; }
+.footer-col ul li a:hover { color: var(--white); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 32px; border-top: 1px solid var(--border);
+  font-family: 'Space Mono', monospace; font-size: 11px; color: var(--grey);
+  letter-spacing: 1px;
+}
+.footer-bottom a { color: var(--blue); }
+.footer-caa {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(0,207,255,0.08);
+  border: 1px solid rgba(0,207,255,0.2);
+  border-radius: 6px; padding: 6px 12px;
+  font-size: 11px; color: var(--blue);
+}
+
+/* ─── SCROLL ANIMATIONS ─── */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .why-layout { gap: 50px; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-mobile-btn { display: block; }
+  section { padding: 70px 20px; }
+  .hero-stats { flex-direction: column; gap: 0; }
+  .hero-stat + .hero-stat { border-left: none; border-top: 1px solid var(--border); }
+  .services-grid { grid-template-columns: 1fr; }
+  .process-steps { grid-template-columns: 1fr; gap: 40px; }
+  .process-steps::before { display: none; }
+  .why-layout { grid-template-columns: 1fr; }
+  .why-visual { display: none; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+  .pricing-card.popular { transform: scale(1); }
+  .testimonial-grid { grid-template-columns: 1fr; }
+  .contact-layout { grid-template-columns: 1fr; gap: 40px; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 40px; }
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+  .hero-title { font-size: 40px; letter-spacing: -1px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <svg class="nav-logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="50" y1="50" x2="20" y2="20" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="50" y1="50" x2="80" y2="20" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="50" y1="50" x2="20" y2="80" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="50" y1="50" x2="80" y2="80" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="20" cy="20" rx="11" ry="4" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.6"/>
+      <ellipse cx="80" cy="20" rx="11" ry="4" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.6"/>
+      <ellipse cx="20" cy="80" rx="11" ry="4" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.6"/>
+      <ellipse cx="80" cy="80" rx="11" ry="4" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.6"/>
+      <rect x="40" y="40" width="20" height="20" rx="4" fill="#1C2A3A" stroke="#00CFFF" stroke-width="2"/>
+      <circle cx="50" cy="52" r="4" fill="none" stroke="#FF6B35" stroke-width="1.5"/>
+      <circle cx="50" cy="52" r="1.5" fill="#FF6B35"/>
+      <circle cx="50" cy="44" r="2" fill="#00CFFF"/>
+    </svg>
+    <span class="nav-logo-text">APEX <span>AERIAL</span> SURVEYS</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">How It Works</a></li>
+    <li><a href="#why">Why Apex</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <button class="nav-mobile-btn" onclick="document.querySelector('.nav-links').style.display = document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex'">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect y="3" width="22" height="2" rx="1" fill="currentColor"/><rect y="10" width="22" height="2" rx="1" fill="currentColor"/><rect y="17" width="22" height="2" rx="1" fill="currentColor"/></svg>
+  </button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="hero-eyebrow">CAA Licensed UAV Operators · UK</div>
+
+  <div class="hero-drone-wrap">
+    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Arms -->
+      <line x1="60" y1="60" x2="22" y2="22" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="98" y2="22" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="22" y2="98" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="98" y2="98" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+      <!-- Rotor rings -->
+      <ellipse cx="22" cy="22" rx="16" ry="5" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.5" class="rotor-spin"/>
+      <ellipse cx="98" cy="22" rx="16" ry="5" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.5"/>
+      <ellipse cx="22" cy="98" rx="16" ry="5" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.5"/>
+      <ellipse cx="98" cy="98" rx="16" ry="5" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.5"/>
+      <!-- Rotor blades (animated) -->
+      <line x1="8" y1="22" x2="36" y2="22" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+      <line x1="22" y1="8" x2="22" y2="36" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+      <line x1="84" y1="22" x2="112" y2="22" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+      <line x1="98" y1="8" x2="98" y2="36" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+      <line x1="8" y1="98" x2="36" y2="98" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+      <line x1="22" y1="84" x2="22" y2="112" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+      <line x1="84" y1="98" x2="112" y2="98" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+      <line x1="98" y1="84" x2="98" y2="112" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+      <!-- Body -->
+      <rect x="46" y="46" width="28" height="28" rx="6" fill="#1C2A3A" stroke="#00CFFF" stroke-width="2"/>
+      <!-- Camera gimbal -->
+      <circle cx="60" cy="64" r="7" fill="none" stroke="#00CFFF" stroke-width="1.5" opacity="0.8"/>
+      <circle cx="60" cy="64" r="3" fill="none" stroke="#FF6B35" stroke-width="1.5"/>
+      <circle cx="60" cy="64" r="1.2" fill="#FF6B35"/>
+      <!-- Status light -->
+      <circle cx="60" cy="51" r="2.5" fill="#00CFFF">
+        <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+    <div class="scan-ring"></div>
+  </div>
+
+  <h1 class="hero-title">
+    Precision<br>
+    <span class="accent">From Above</span>
+  </h1>
+
+  <p class="hero-sub">
+    Professional UAV inspection and survey services for the UK's <strong>construction, scaffolding, property</strong> and infrastructure sectors. Fast. Documented. Delivered.
+  </p>
+
+  <div class="hero-ctas">
+    <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Free Quote</button>
+    <button class="btn-secondary" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Explore Services ↓</button>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">CAA<span>✓</span></div>
+      <div class="hero-stat-label">Licensed & Insured</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">24<span>hr</span></div>
+      <div class="hero-stat-label">Report Turnaround</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">£5<span>M</span></div>
+      <div class="hero-stat-label">Public Liability</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">6<span>+</span></div>
+      <div class="hero-stat-label">Service Types</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-dot"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services">
+  <div class="section-header reveal">
+    <div class="section-label">02 — What We Do</div>
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-sub">From scaffolding compliance to thermal imaging — every service is delivered with professional documentation and fast turnaround.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card featured reveal reveal-delay-1">
+      <div class="service-icon">🏗️</div>
+      <span class="service-tag">Most Popular</span>
+      <h3>Scaffolding Inspection</h3>
+      <p>Rapid aerial inspection of scaffolding structures. Compliance documentation, progress checks and condition reports — without the need for manned access.</p>
+      <div class="service-price">From £350 per visit</div>
+      <a href="#contact" class="service-link">Book a visit →</a>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">🏠</div>
+      <h3>Roof & Building Survey</h3>
+      <p>Pre and post-construction roof inspections, facade surveys and snag documentation. Detailed PDF reports delivered same or next day.</p>
+      <div class="service-price">From £295</div>
+      <a href="#contact" class="service-link">Get a quote →</a>
+    </div>
+
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-icon">🔥</div>
+      <h3>Thermal Imaging</h3>
+      <p>Heat loss surveys, flat roof moisture detection, solar panel hotspot identification and electrical surveys using specialist thermal payload.</p>
+      <div class="service-price">From £550</div>
+      <a href="#contact" class="service-link">Get a quote →</a>
+    </div>
+
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-icon">📐</div>
+      <h3>Land & Site Survey</h3>
+      <p>Photogrammetric mapping, 3D site models, topographic surveys and stockpile volume calculations for developers, quarries and land managers.</p>
+      <div class="service-price">From £495</div>
+      <a href="#contact" class="service-link">Get a quote →</a>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-icon">🎥</div>
+      <h3>Aerial Photography & Film</h3>
+      <p>Stunning aerial imagery for property developers, estate agents and marketing teams. Photography packages, video reels and social media edits.</p>
+      <div class="service-price">From £295</div>
+      <a href="#contact" class="service-link">Get a quote →</a>
+    </div>
+
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-icon">📊</div>
+      <h3>Progress Monitoring</h3>
+      <p>Regular aerial documentation of construction progress. Weekly or monthly site visits with comparison overlays and structured reports for developers.</p>
+      <div class="service-price">From £850/month</div>
+      <a href="#contact" class="service-link">Get a quote →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section id="process">
+  <div class="section-header center reveal">
+    <div class="section-label">03 — The Process</div>
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">Three simple steps from your first call to a professional report in your inbox.</p>
+  </div>
+
+  <div class="process-steps">
+    <div class="process-step reveal reveal-delay-1">
+      <div class="step-num">01</div>
+      <h3>Book & Brief</h3>
+      <p>Tell us about your site, what you need inspected and your timeline. We'll confirm availability, check airspace, and agree a scope of work — usually within 24 hours.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="step-num">02</div>
+      <h3>We Fly</h3>
+      <p>Our CAA-licensed pilot attends site, conducts the flight safely and captures all required imagery and data. Typically 1–3 hours on site depending on scope.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="step-num">03</div>
+      <h3>Report Delivered</h3>
+      <p>You receive a professional PDF inspection report — annotated images, key findings, recommendations and all raw footage — within 24 hours of the visit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHY APEX ═══ -->
+<section id="why">
+  <div class="why-layout">
+    <div>
+      <div class="section-header reveal">
+        <div class="section-label">04 — Why Choose Us</div>
+        <h2 class="section-title">Built for the Industry.<br>Not the Hobby.</h2>
+        <p class="section-sub">We're not weekend flyers with a camera. We're a professional inspection service built around what builders, surveyors and developers actually need.</p>
+      </div>
+      <div class="why-features">
+        <div class="why-feature reveal reveal-delay-1">
+          <div class="why-feature-icon">🎯</div>
+          <div>
+            <h4>CAA Licensed & Fully Insured</h4>
+            <p>Full UK CAA Operational Authorisation and £5M public liability. Every job is compliant — we hand you the paperwork to prove it.</p>
+          </div>
+        </div>
+        <div class="why-feature reveal reveal-delay-2">
+          <div class="why-feature-icon">⚡</div>
+          <div>
+            <h4>Same or Next Day Reports</h4>
+            <p>We don't sit on footage. Your inspection report — complete with annotated images and recommendations — is in your inbox within 24 hours.</p>
+          </div>
+        </div>
+        <div class="why-feature reveal reveal-delay-3">
+          <div class="why-feature-icon">🔍</div>
+          <div>
+            <h4>Professional Documentation</h4>
+            <p>Not just raw video. Every job produces a structured, client-ready PDF report that holds up on site, with insurers and on building records.</p>
+          </div>
+        </div>
+        <div class="why-feature reveal reveal-delay-4">
+          <div class="why-feature-icon">🤝</div>
+          <div>
+            <h4>Annual Contracts Available</h4>
+            <p>Work with us regularly? We offer annual inspection contracts with priority booking and discounted rates for scaffolding and construction firms.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-visual reveal">
+      <div class="why-card-main">
+        <div class="why-badge">CAA<br>Licensed</div>
+        <div class="why-card-drone">
+          <svg width="90" height="90" viewBox="0 0 120 120" fill="none">
+            <line x1="60" y1="60" x2="22" y2="22" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="98" y2="22" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="22" y2="98" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="98" y2="98" stroke="#00CFFF" stroke-width="2.5" stroke-linecap="round"/>
+            <ellipse cx="22" cy="22" rx="14" ry="4.5" fill="none" stroke="#00CFFF" stroke-width="1.5" opacity="0.5"/>
+            <ellipse cx="98" cy="22" rx="14" ry="4.5" fill="none" stroke="#00CFFF" stroke-width="1.5" opacity="0.5"/>
+            <ellipse cx="22" cy="98" rx="14" ry="4.5" fill="none" stroke="#00CFFF" stroke-width="1.5" opacity="0.5"/>
+            <ellipse cx="98" cy="98" rx="14" ry="4.5" fill="none" stroke="#00CFFF" stroke-width="1.5" opacity="0.5"/>
+            <rect x="46" y="46" width="28" height="28" rx="6" fill="#0D1B2A" stroke="#00CFFF" stroke-width="2"/>
+            <circle cx="60" cy="64" r="6" fill="none" stroke="#FF6B35" stroke-width="1.5"/>
+            <circle cx="60" cy="64" r="2.5" fill="#FF6B35" opacity="0.8"/>
+            <circle cx="60" cy="51" r="2.5" fill="#00CFFF" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="why-card-stat">
+          <span class="why-card-stat-label">Report Turnaround</span>
+          <span class="why-card-stat-val">24hr</span>
+        </div>
+        <div class="why-card-stat">
+          <span class="why-card-stat-label">Public Liability</span>
+          <span class="why-card-stat-val">£5M</span>
+        </div>
+        <div class="why-card-stat">
+          <span class="why-card-stat-label">Insurance</span>
+          <span class="why-card-stat-val">✓ Full</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-num"><span class="count" data-target="24">0</span><span class="unit">hr</span></div>
+      <div class="stat-desc">Report Turnaround</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-num">£<span class="count" data-target="5">0</span><span class="unit">M</span></div>
+      <div class="stat-desc">Public Liability Cover</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-num"><span class="count" data-target="6">0</span><span class="unit">+</span></div>
+      <div class="stat-desc">Service Specialisms</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-num"><span class="count" data-target="100">0</span><span class="unit">%</span></div>
+      <div class="stat-desc">CAA Compliant</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section id="pricing">
+  <div class="section-header center reveal">
+    <div class="section-label">05 — Rates</div>
+    <h2 class="section-title">Clear, Simple Pricing</h2>
+    <p class="section-sub">No hidden costs. All prices exclude VAT. Travel beyond 30 miles charged at £0.45/mile.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="pricing-card reveal reveal-delay-1">
+      <h3>Inspection Starter</h3>
+      <p class="pricing-type">Roof, facade & building surveys</p>
+      <div class="price-amount"><span class="currency">£</span>295</div>
+      <p class="price-note">Per inspection + basic report</p>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li>Up to 2hr site visit</li>
+        <li>HD aerial footage</li>
+        <li>20 edited still images</li>
+        <li>Summary report (PDF)</li>
+        <li>Next day delivery</li>
+      </ul>
+      <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
+    </div>
+
+    <div class="pricing-card popular reveal reveal-delay-2">
+      <span class="popular-badge">Most Popular</span>
+      <h3>Professional</h3>
+      <p class="pricing-type">Scaffolding & construction inspection</p>
+      <div class="price-amount"><span class="currency">£</span>450</div>
+      <p class="price-note">Per visit, full report included</p>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li>Full inspection flight</li>
+        <li>Edited 4K footage</li>
+        <li>Full annotated PDF report</li>
+        <li>Priority same-day delivery</li>
+        <li>Compliance documentation</li>
+        <li>Retainer discounts available</li>
+      </ul>
+      <button class="btn-blue" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book Now</button>
+    </div>
+
+    <div class="pricing-card reveal reveal-delay-3">
+      <h3>Thermal & Advanced</h3>
+      <p class="pricing-type">Thermal imaging & mapping</p>
+      <div class="price-amount"><span class="from">from</span><span class="currency">£</span>550</div>
+      <p class="price-note">Pricing varies by project scope</p>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li>Thermal camera payload</li>
+        <li>Heat loss detection</li>
+        <li>Moisture & defect analysis</li>
+        <li>Full technical report</li>
+        <li>Solar & infrastructure surveys</li>
+      </ul>
+      <button class="btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Enquire</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials">
+  <div class="section-header center reveal">
+    <div class="section-label">06 — Client Feedback</div>
+    <h2 class="section-title">What Clients Say</h2>
+  </div>
+  <div class="testimonial-grid">
+    <div class="testimonial-card reveal reveal-delay-1">
+      <div class="testimonial-stars">★★★★★</div>
+      <p>"Incredibly professional service. The inspection report was detailed, clearly written and arrived in our inbox the same evening. Saved us an expensive access platform hire."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">JM</div>
+        <div>
+          <div class="author-name">James M.</div>
+          <div class="author-company">Site Manager, Regional Contractor</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="testimonial-stars">★★★★★</div>
+      <p>"We now use Apex for all our scaffolding compliance checks. The turnaround is fast, the reports are exactly what our clients need, and the pricing is very competitive."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">SB</div>
+        <div>
+          <div class="author-name">Sarah B.</div>
+          <div class="author-company">Director, Scaffolding Company</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-3">
+      <div class="testimonial-stars">★★★★★</div>
+      <p>"The aerial photography for our new development was stunning. The team were easy to work with and delivered exactly what we needed for our marketing campaign."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RP</div>
+        <div>
+          <div class="author-name">Richard P.</div>
+          <div class="author-company">Property Developer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="contact-layout">
+    <div>
+      <div class="section-header reveal">
+        <div class="section-label">07 — Contact</div>
+        <h2 class="section-title">Ready to Fly?</h2>
+        <p class="section-sub">Get in touch for a free quote. We typically respond within 2 hours during business hours.</p>
+      </div>
+      <div class="contact-info reveal">
+        <div class="contact-item">
+          <div class="contact-item-icon">📧</div>
+          <div>
+            <h4>Email</h4>
+            <p><a href="mailto:info@apexaerialsurveys.com">info@apexaerialsurveys.com</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">🌐</div>
+          <div>
+            <h4>Website</h4>
+            <p><a href="https://apexaerialsurveys.com">apexaerialsurveys.com</a></p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div>
+            <h4>Coverage</h4>
+            <p>UK-wide operations. Travel within 30 miles at no extra charge.</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">⏱️</div>
+          <div>
+            <h4>Response Time</h4>
+            <p>Quotes within 2 hours. Site visits often bookable within 48 hours.</p>
+          </div>
+        </div>
+      </div>
+      <div class="contact-accreditations reveal">
+        <div class="accred-badge"><span class="dot"></span>CAA Licensed</div>
+        <div class="accred-badge"><span class="dot"></span>£5M Insured</div>
+        <div class="accred-badge"><span class="dot"></span>UK Nationwide</div>
+      </div>
+    </div>
+
+    <div class="contact-form reveal reveal-delay-2">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;">Get a Free Quote</h3>
+      <p style="font-size:13px;color:var(--grey);margin-bottom:28px;">Fill in your details and we'll be in touch within 2 hours.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="John">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Smith">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Company Name</label>
+        <input type="text" placeholder="Your Company Ltd">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="john@company.com">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+44 7XXX XXX XXX">
+      </div>
+      <div class="form-group">
+        <label>Service Required</label>
+        <select>
+          <option value="">Select a service...</option>
+          <option>Scaffolding Inspection</option>
+          <option>Roof & Building Survey</option>
+          <option>Thermal Imaging</option>
+          <option>Construction Progress Monitoring</option>
+          <option>Aerial Photography & Video</option>
+          <option>Land & Site Survey</option>
+          <option>Other / Not Sure</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell Us About Your Project</label>
+        <textarea placeholder="Site address, what you need inspected, any deadlines or specific requirements..."></textarea>
+      </div>
+      <button class="form-submit">Send Enquiry →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#hero" class="nav-logo" style="display:inline-flex;margin-bottom:4px;">
+        <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+          <line x1="50" y1="50" x2="20" y2="20" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+          <line x1="50" y1="50" x2="80" y2="20" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+          <line x1="50" y1="50" x2="20" y2="80" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+          <line x1="50" y1="50" x2="80" y2="80" stroke="#00CFFF" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="20" cy="20" rx="11" ry="4" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.6"/>
+          <ellipse cx="80" cy="20" rx="11" ry="4" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.6"/>
+          <ellipse cx="20" cy="80" rx="11" ry="4" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.6"/>
+          <ellipse cx="80" cy="80" rx="11" ry="4" fill="none" stroke="#00CFFF" stroke-width="2" opacity="0.6"/>
+          <rect x="40" y="40" width="20" height="20" rx="4" fill="#1C2A3A" stroke="#00CFFF" stroke-width="2"/>
+          <circle cx="50" cy="52" r="3.5" fill="none" stroke="#FF6B35" stroke-width="1.5"/>
+          <circle cx="50" cy="44" r="2" fill="#00CFFF"/>
+        </svg>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;margin-left:10px;">APEX <span style="color:#00CFFF;">AERIAL</span> SURVEYS</span>
+      </a>
+      <p>Professional UAV inspection and survey services for the UK construction, property and infrastructure sectors.</p>
+      <div style="margin-top:20px;">
+        <span class="footer-caa">✓ CAA Licensed Operators</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#services">Scaffolding Inspection</a></li>
+        <li><a href="#services">Roof Surveys</a></li>
+        <li><a href="#services">Thermal Imaging</a></li>
+        <li><a href="#services">Progress Monitoring</a></li>
+        <li><a href="#services">Aerial Photography</a></li>
+        <li><a href="#services">Land Surveys</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#why">Why Apex</a></li>
+        <li><a href="#process">How It Works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">CAA Certificate</a></li>
+        <li><a href="#">Insurance</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Apex Aerial Surveys Ltd · All rights reserved</span>
+    <span><a href="mailto:info@apexaerialsurveys.com">info@apexaerialsurveys.com</a></span>
+    <span>apexaerialsurveys.com</span>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 30);
+});
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// Counter animation
+const counters = document.querySelectorAll('.count');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.done) {
+      e.target.dataset.done = true;
+      const target = parseInt(e.target.dataset.target);
+      const duration = 1600;
+      const step = target / (duration / 16);
+      let current = 0;
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        e.target.textContent = Math.floor(current);
+        if (current >= target) clearInterval(timer);
+      }, 16);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObserver.observe(c));
+
+// Floating particles
+const container = document.getElementById('particles');
+for (let i = 0; i < 25; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.cssText = `
+    left: ${Math.random() * 100}%;
+    --drift: ${(Math.random() - 0.5) * 200}px;
+    animation-duration: ${6 + Math.random() * 8}s;
+    animation-delay: ${Math.random() * 8}s;
+    width: ${1 + Math.random() * 2}px;
+    height: ${1 + Math.random() * 2}px;
+    opacity: ${0.2 + Math.random() * 0.5};
+  `;
+  container.appendChild(p);
+}
+</script>
+</body>
+</html>
