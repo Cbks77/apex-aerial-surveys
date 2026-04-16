@@ -1,5 +1,5 @@
-// Vercel Serverless Function — Contact Form → Resend API
-// Replaces Formspree with direct email delivery
+// Vercel Serverless Function — Contact Form → Brevo API
+// Transactional email delivery via Brevo (formerly Sendinblue)
 
 export default async function handler(req, res) {
   // CORS headers
@@ -23,18 +23,25 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch('https://api.resend.com/emails', {
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        'api-key': process.env.BREVO_API_KEY,
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       body: JSON.stringify({
-        from: `Apex Website <noreply@${process.env.MAIL_DOMAIN || 'apexaerialsurveys.com'}>`,
-        to: [process.env.CLIENT_EMAIL || 'info@apexaerialsurveys.com'],
-        reply_to: email,
+        sender: {
+          name: 'Apex Website',
+          email: process.env.SENDER_EMAIL || 'noreply@apexaerialsurveys.com',
+        },
+        to: [{
+          email: process.env.CLIENT_EMAIL || 'info@apexaerialsurveys.com',
+          name: 'Apex Aerial Surveys',
+        }],
+        replyTo: { email, name },
         subject: `New Enquiry from ${name}${service ? ` — ${service}` : ''}`,
-        html: `
+        htmlContent: `
           <div style="font-family: -apple-system, sans-serif; max-width: 600px;">
             <h2 style="color: #0a1628; border-bottom: 2px solid #f97316; padding-bottom: 8px;">
               New Enquiry — Apex Aerial Surveys
@@ -59,7 +66,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const err = await response.json();
-      console.error('Resend error:', err);
+      console.error('Brevo error:', err);
       return res.status(500).json({ error: 'Failed to send email. Please try again.' });
     }
 
