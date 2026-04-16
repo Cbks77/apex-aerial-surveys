@@ -1475,11 +1475,6 @@ for (let i = 0; i < 25; i++) {
   container.appendChild(p);
 }
 
-// HTTPS redirect (fallback until GitHub Pages enforces)
-if (location.protocol === 'http:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-  location.replace('https://' + location.host + location.pathname + location.search + location.hash);
-}
-
 // Mobile menu toggle
 const mobileBtn = document.getElementById('mobileMenuBtn');
 const navLinks = document.querySelector('.nav-links');
