@@ -1304,43 +1304,43 @@ footer {
       <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;">Get a Free Quote</h3>
       <p style="font-size:13px;color:var(--grey);margin-bottom:28px;">Fill in your details and we'll be in touch within 2 hours.</p>
 
-      <div data-fs-success style="display:none;text-align:center;padding:40px 20px;">
+      <div id="form-success" style="display:none;text-align:center;padding:40px 20px;">
         <div style="font-size:48px;margin-bottom:16px;">✅</div>
         <h4 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;color:var(--white);">Enquiry Sent!</h4>
         <p style="font-size:14px;color:var(--grey);">Thanks — we'll be in touch within 2 hours during business hours.</p>
       </div>
 
-      <div data-fs-error style="display:none;margin-top:12px;padding:12px 16px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.3);border-radius:8px;font-size:13px;color:#FF6B35;"></div>
+      <div id="form-error" style="display:none;margin-top:12px;padding:12px 16px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.3);border-radius:8px;font-size:13px;color:#FF6B35;"></div>
 
       <form id="contact-form">
         <div class="form-row">
           <div class="form-group">
             <label for="first-name">First Name</label>
-            <input type="text" id="first-name" name="first_name" placeholder="John" required data-fs-field>
-            <span data-fs-error="first_name" class="fs-field-error"></span>
+            <input type="text" id="first-name" name="first_name" placeholder="John" required>
+            <span class="field-error"></span>
           </div>
           <div class="form-group">
             <label for="last-name">Last Name</label>
-            <input type="text" id="last-name" name="last_name" placeholder="Smith" required data-fs-field>
-            <span data-fs-error="last_name" class="fs-field-error"></span>
+            <input type="text" id="last-name" name="last_name" placeholder="Smith" required>
+            <span class="field-error"></span>
           </div>
         </div>
         <div class="form-group">
           <label for="company">Company Name</label>
-          <input type="text" id="company" name="company" placeholder="Your Company Ltd" data-fs-field>
+          <input type="text" id="company" name="company" placeholder="Your Company Ltd">
         </div>
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="john@company.com" required data-fs-field>
-          <span data-fs-error="email" class="fs-field-error"></span>
+          <input type="email" id="email" name="email" placeholder="john@company.com" required>
+          <span class="field-error"></span>
         </div>
         <div class="form-group">
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" placeholder="+44 7XXX XXX XXX" data-fs-field>
+          <input type="tel" id="phone" name="phone" placeholder="+44 7XXX XXX XXX">
         </div>
         <div class="form-group">
           <label for="service">Service Required</label>
-          <select id="service" name="service" data-fs-field>
+          <select id="service" name="service">
             <option value="">Select a service...</option>
             <option>Scaffolding Inspection</option>
             <option>Roof & Building Survey</option>
@@ -1353,10 +1353,10 @@ footer {
         </div>
         <div class="form-group">
           <label for="message">Tell Us About Your Project</label>
-          <textarea id="message" name="message" placeholder="Site address, what you need inspected, any deadlines or specific requirements..." data-fs-field></textarea>
-          <span data-fs-error="message" class="fs-field-error"></span>
+          <textarea id="message" name="message" placeholder="Site address, what you need inspected, any deadlines or specific requirements..."></textarea>
+          <span class="field-error"></span>
         </div>
-        <button type="submit" class="form-submit" data-fs-submit-btn>Send Enquiry →</button>
+        <button type="submit" class="form-submit" id="submit-btn">Send Enquiry →</button>
       </form>
     </div>
   </div>
@@ -1510,9 +1510,50 @@ document.addEventListener('keydown', (e) => {
 </script>
 
 <script>
-  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-  formspree('initForm', { formElement: '#contact-form', formId: 'xrerezpo' });
+// Contact form → /api/contact (Resend)
+const contactForm = document.getElementById('contact-form');
+const formSuccess = document.getElementById('form-success');
+const formError = document.getElementById('form-error');
+const submitBtn = document.getElementById('submit-btn');
+
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+  formError.style.display = 'none';
+
+  const data = {
+    name: `${contactForm.first_name.value} ${contactForm.last_name.value}`.trim(),
+    email: contactForm.email.value,
+    phone: contactForm.phone.value || undefined,
+    service: contactForm.service.value || undefined,
+    message: contactForm.message.value,
+  };
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      contactForm.style.display = 'none';
+      formSuccess.style.display = 'block';
+    } else {
+      const err = await res.json();
+      formError.textContent = err.error || 'Something went wrong. Please try again.';
+      formError.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Enquiry →';
+    }
+  } catch {
+    formError.textContent = 'Network error. Please check your connection and try again.';
+    formError.style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send Enquiry →';
+  }
+});
 </script>
-<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </body>
 </html>
