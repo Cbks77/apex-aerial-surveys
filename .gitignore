@@ -16,3 +16,4 @@
 # Temp files
 *.tmp
 *.bak
+.vercel
